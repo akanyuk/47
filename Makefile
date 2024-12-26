@@ -3,7 +3,7 @@ ifeq ($(PROJECT_NAME),)
 endif
 
 # Listing the parts that should be assembled automatically
-PARTS=part.anima1
+PARTS=
 
 NAME_SUFFIX = $(shell date +%Y%m%d)-$(shell git log --format="%h" -n 1)
 
