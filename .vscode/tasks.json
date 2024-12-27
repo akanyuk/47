@@ -34,15 +34,15 @@
                 {
                         "label": "build all",
                         "command": "make",
-                        "group": "build"
-                },
-                {
-                        "label": "part.cnt8x8",
-                        "command": "make clean-part.cnt8x8 build/part.cnt8x8.bin",
                         "group": {
                                 "kind": "build",
                                 "isDefault": true
                         }
+                },
+                {
+                        "label": "part.cnt8x8",
+                        "command": "make clean-part.cnt8x8 build/part.cnt8x8.bin",
+                        "group": "build"
                 }
         ]
 }

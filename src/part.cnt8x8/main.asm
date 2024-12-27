@@ -9,15 +9,31 @@
 
 start	ei : ld sp, start
 
-	ld a, 1 : out (#fe), a 
-	ld a, %01000010 : call common.SetScreenAttr
+	ld a, 0 : out (#fe), a 
 
-	call PART_START
-	
+1	ld bc, #3437
+	call cnt8x8.Initial
+
+	ld b, 50 : halt : djnz $-1
+
+	ld a, 3
+	call cnt8x8.Do
+
+	ld a, 7 : out (#fe), a 
+	halt
+	call common.ClearScreen
+	halt
+	ld a, 0 : out (#fe), a 
+	ld b, 10 : halt : djnz $-1
+
+	jr 1b
 	di : halt
 
-PART_START	include "part.cnt8x8.asm"
-		
+PART_START	
+	module cnt8x8
+	include "part.cnt8x8.asm"
+	endmodule
+				
 	display /d, 'Part length: ', $ - PART_START
 	display 'Part ended at: ', $
 

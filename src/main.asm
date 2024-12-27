@@ -22,6 +22,16 @@ page0s
 
 	ld a,#5c : ld i,a : ld hl,interr : ld (#5cff),hl : im 2 : ei
 
+	ld bc, #3437
+	call cnt8x8.Initial
+
+	ld b, 50 : halt : djnz $-1
+
+	ld a, 3
+	call cnt8x8.Do
+
+	ld b, 50 : halt : djnz $-1
+
 	call PART_ANIMA1
 	jr $
 
@@ -57,6 +67,10 @@ INTS_COUNTER	equ $+1
 	ret
 
 PART_ANIMA1	include "src/part.anima1/part.anima1.asm"
+
+	module cnt8x8
+	include "src/part.cnt8x8/part.cnt8x8.asm"
+	endmodule
 
 page0e	display /d, '[page 0] free: ', #ffff - $, ' (', $, ')'	
 
