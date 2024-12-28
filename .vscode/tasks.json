@@ -34,15 +34,20 @@
                 {
                         "label": "build all",
                         "command": "make",
-                        "group": {
-                                "kind": "build",
-                                "isDefault": true
-                        }
+                        "group": "build"
                 },
                 {
                         "label": "part.cnt8x8",
                         "command": "make clean-part.cnt8x8 build/part.cnt8x8.bin",
                         "group": "build"
+                },
+                {
+                        "label": "part.tg",
+                        "command": "make clean-part.tg build/part.tg.bin",
+                        "group": {
+                                "kind": "build",
+                                "isDefault": true
+                        }
                 }
         ]
 }
