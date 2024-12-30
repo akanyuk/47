@@ -4,7 +4,7 @@ Initial	ld a, b
 	ld a, c
 	ld (_st2.1 + 1), a
 
-	ld a, %01000010 : call common.SetScreenAttr
+	ld hl, #58e0 : ld de, #58e1 : ld bc, #01ff : ld (hl), %01000010 : ldir
 	ld hl, #5a00 : ld de, #5a01 : ld bc, #00ff : ld (hl), l : ldir
 	jp initialState
 

@@ -1,4 +1,4 @@
-	xor a : call common.SetScreenAttr
+First	xor a : call common.SetScreenAttr
 
 	ld hl, TG_BG
 	ld de, #4000

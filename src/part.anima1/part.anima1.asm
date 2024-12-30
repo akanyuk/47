@@ -2,7 +2,8 @@
 	ld de, #4000
 	call common.Depack
 
-loop	
+	ld b, 5
+loop	push bc
 	ld a, 1 : call common.SetPage
 	ld b, 5
 1	push bc
@@ -39,7 +40,7 @@ loop
 	pop bc
 	djnz 1b
 
-	jr loop
+	pop bc : djnz loop
 
 DisplayFrame    ld hl,FRAME_0000
                 jp(hl)

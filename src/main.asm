@@ -22,7 +22,27 @@ page0s
 
 	ld a,#5c : ld i,a : ld hl,interr : ld (#5cff),hl : im 2 : ei
 
+	ld a, %01000110 : call common.SetScreenAttr
+	call dispPresents
+	ld b, 50 : halt : djnz $-1
+
 	ld bc, #3437
+	call cnt8x8.Initial
+
+	ld b, 80 : halt : djnz $-1
+
+	ld a, 3
+	call cnt8x8.Do
+
+	call tg.First
+
+	ld b, 50 : halt : djnz $-1
+
+	xor a : call common.SetScreenAttr
+	call PART_ANIMA1
+	xor a : call common.ClearScreen
+
+	ld bc, #3033
 	call cnt8x8.Initial
 
 	ld b, 50 : halt : djnz $-1
@@ -30,9 +50,6 @@ page0s
 	ld a, 3
 	call cnt8x8.Do
 
-	ld b, 50 : halt : djnz $-1
-
-	call PART_ANIMA1
 	jr $
 
 interr	di
@@ -59,6 +76,22 @@ MUSIC_STATE	equ $+1
 INTS_COUNTER	equ $+1
 	ld hl, #0000 : inc hl : ld ($-3), hl
 
+	ifdef _MUSIC_
+	ld de, 3116
+	sbc hl, de 
+	jr c, 1f
+	ld a, (common.CUR_SCREEN) : ld b, a
+	ld a, P_TRACK : or b : or %00010000
+	ld bc, #7ffd : out (c), a
+	call PT3PLAY + 8	
+	// Restore page
+	ld a, (common.CUR_SCREEN) : ld b, a 
+	ld a, (common.CUR_PAGE) : or b : or %00010000
+	ld bc, #7ffd : out (c), a
+	xor a : ld (MUSIC_STATE), a
+1	
+	endif
+
 	ifdef _DEBUG_BORDER : xor a : out (#fe), a : endif ; debug
 	pop iy,ix,hl,de,bc,af
 	exx : ex af, af'
@@ -68,8 +101,14 @@ INTS_COUNTER	equ $+1
 
 PART_ANIMA1	include "src/part.anima1/part.anima1.asm"
 
+dispPresents	include "src/presents.asm"
+
 	module cnt8x8
 	include "src/part.cnt8x8/part.cnt8x8.asm"
+	endmodule
+
+	module tg
+	include "src/part.tg/part.tg.asm"
 	endmodule
 
 page0e	display /d, '[page 0] free: ', #ffff - $, ' (', $, ')'	
