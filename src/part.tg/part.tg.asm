@@ -10,7 +10,7 @@ First	xor a : call common.SetScreenAttr
 
 	call dispVinnny
 	ld b, 30 : halt : djnz $-1
-	ld bc, #0308
+	ld bc, #0300
 	call dispVinnnyCnt
 	ld b, 100 : halt : djnz $-1
 	call VinnnyCntHide
@@ -34,7 +34,7 @@ First	xor a : call common.SetScreenAttr
 
 	call dispVinnny
 	ld b, 30 : halt : djnz $-1
-	ld bc, #0105
+	ld bc, #0100
 	call dispVinnnyCnt
 	ld b, 100 : halt : djnz $-1
 	call VinnnyCntHide

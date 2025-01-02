@@ -9,7 +9,29 @@
 	ld de, #4a31
 	call PrnNum16x20
 
-	; showing `days to DiHalt`
+	; showing `NN days to DiHalt`
+	ld a, %11000010
+	ld (#592e), a
+	ld (#592f), a
+	ld (#5930), a
+	ld (#5931), a
+	ld (#5932), a
+	ld (#5933), a
+
+	ld (#594e), a
+	ld (#594f), a
+	ld (#5950), a
+	ld (#5951), a
+	ld (#5952), a
+	ld (#5953), a
+
+	ld (#596e), a
+	ld (#596f), a
+	ld (#5970), a
+	ld (#5971), a
+	ld (#5972), a
+	ld (#5973), a
+
 	ld a, %01000010
 	ld (#598e), a
 	ld (#598f), a
@@ -75,9 +97,9 @@ VinnnyCntHide	; Cleaning counter digits
 	djnz 1b
 
 	; hidding `days to DiHalt`
-	ld hl, #598e
+	ld hl, #592e
 	ld de, 32 - 6
-	ld b, 9
+	ld b, 12
 1	dup 6 : ld (hl), 0 : inc hl : edup
 	add hl, de
 	djnz 1b
