@@ -43,7 +43,7 @@ loop	push bc
 	pop bc : djnz loop
 
 DisplayFrame    ld hl,FRAME_0000
-                jp(hl)
+                jp (hl)
 
 NextFrame	ld HL,FRAMES
 	inc hl : inc hl

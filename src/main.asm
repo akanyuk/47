@@ -14,7 +14,12 @@ page0s
 
 	call common.ClearScreen
 
+	call noiser.Init
+
 	ld a, %01000110 : call common.SetScreenAttr
+
+	ld b, 50 : halt : djnz $-1
+
 	call dispPresents
 
 	ld bc, #3437
@@ -32,26 +37,56 @@ page0s
 
 	ld b, 30 : halt : djnz $-1
 
+	ld hl, #0138 : ld a, 50 : call interrStart	
+
 	ld a, 4
 	call cnt8x8.Do
 
-	call tg.First
-	xor a : call common.SetScreenAttr
+	ld hl, #082e : ld a, 44 : call interrStart	
 
-	ld b, 30 : halt : djnz $-1
+	call tg.First
+	ld a, 7 : call common.SetScreenAttr
+
+	ld b, 15 : halt : djnz $-1
+	xor a : call common.SetScreenAttr
+	ld b, 15 : halt : djnz $-1
 
 	call PART_ANIMA1
+
+	ld hl, #0001 : ld a, 32 : call interrStart
+
 	xor a : call common.ClearScreen
 
-	ld bc, #3033
+	ld bc, #3034
 	call cnt8x8.Initial
 
-	ld b, 50 : halt : djnz $-1
-
-	ld a, 3
+	ld a, 4
 	call cnt8x8.Do
 
 	jr $
+
+	; Starting interrupts call
+	; hl - delay before start
+	; a - frames to display before autostop
+interrStart	ld (_intCur1 + 1), hl
+	ld (_intCur2 + 1), a
+	xor a : ld (interrCurrent), a
+	ret
+
+interrCurrent	ret
+_intCur1	ld bc, 0 ; delay before start
+	ld a, b : or c : jr z, _intCur2
+	dec bc : ld (_intCur1 + 1), bc
+	ret
+_intCur2	ld a, 0 ; frames to display before autostop
+	or a : jr z, interrStop
+	dec a : ld (_intCur2 + 1), a
+	jp noiser.Do
+
+	; Stopping interrupts call
+interrStop	ld hl, interrCurrent
+	ld (hl), #c9 ; ret
+	jp noiser.Stop
 
 interr	di
 	push af,bc,de,hl,ix,iy
@@ -72,6 +107,8 @@ MUSIC_STATE	equ $+1
 	ld bc, #7ffd : out (c), a
 1	
 	endif
+
+	call interrCurrent
 
 	; ints counter
 INTS_COUNTER	equ $+1
@@ -99,6 +136,10 @@ INTS_COUNTER	equ $+1
 	pop iy,ix,hl,de,bc,af
 	ei
 	ret
+
+	module noiser
+	include "src/noiser.asm"
+	endmodule
 
 PART_ANIMA1	include "src/part.anima1/part.anima1.asm"
 
